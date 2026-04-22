@@ -1,0 +1,25 @@
+1. Use both Chile and Brazil:
+   Based on previous two trials, the model based on Chile tend to predict Medium more often while the model based on Brazil tend to predict High and Low. Combining them would be a reasonable approach to level out the imbalances.
+
+2. Rebuild feature consistency:
+   The training GeoTIFF and validation GeoTIFF are built differently. Keep them same format: both median composite or both single-date slice.
+
+3. Use more metrics:
+   Eg. EVI or SAVI/MSAVI for vegetation, MNDWI for water, BSI/bare-soil type proxies, local mean, local standard deviation, neighborhood percent vegetation/water/built-up
+   The key is that UHI is not just "what is exactly under this point?" It is also "what surrounds this point?"
+
+4. Use multi-scale neightborhood features:
+   Since the Medium class is often a transition zone between hot and cool environemnts, it is important to create a buffer which accounts for the regioanl metrics.
+   For example, for buffer of 30m, 100m, and 250m, compute mean NDVI, mean NDBI, mean NDWI, ...
+
+5. Use building height and urban morphology as well:
+   Look for more morphogoly features: mean building height, max building height, footpring coverage ratio, building count in buffer, built volume proxy = footpring area * height,...
+
+6. Standardize features within city:
+   Raw predictor magnitudes may transfer poorly across cities. So create within-city z-socres or within-city percentile ranks may be helpful.
+
+7. Try stronger tabular modesl:
+   XGBoost, LightGBM, CatBoost could be alternative model options.
+
+8. Add spatial features:
+   Fill in more open geospatial covariates such as elevation, slope, distance to coastline, road density,...
